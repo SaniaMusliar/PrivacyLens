@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PrivacyLens — Policy Analysis Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <span class="brand-mark">PL</span>
+        <div class="brand-text">
+          <div class="brand-name">PrivacyLens</div>
+          <div class="brand-sub">Policy Analysis Tool</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 10.5 10 4l7 6.5M5 9v7h10V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" data-view="upload">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M10 13V4m0 0L6.5 7.5M10 4l3.5 3.5M4 14.5v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload Policy
+        </button>
+        <button class="nav-item" data-view="analysis">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 16V9m4 7V4m4 12v-5m4 5V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Policy Analysis
+        </button>
+        <button class="nav-item" data-view="chat">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3.5 5.5A1.5 1.5 0 0 1 5 4h10a1.5 1.5 0 0 1 1.5 1.5v6A1.5 1.5 0 0 1 15 13H8.5L5 16v-3H5a1.5 1.5 0 0 1-1.5-1.5v-6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          Ask PrivacyLens
+        </button>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="policy-status" id="sidebarPolicyStatus">
+        <span class="dot dot-empty"></span>
+        <span>No policy loaded</span>
+      </div>
+      <div class="sidebar-footnote">B.Tech Project · TF-IDF + Cosine Similarity</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD VIEW -->
+    <section class="view" id="view-dashboard">
+
+      <div id="dashboardHero">
+        <div class="hero">
+          <span class="eyebrow">Evidence-based privacy policy analysis</span>
+          <h1>Understand what a privacy policy actually says.</h1>
+          <p class="hero-desc">Upload a privacy policy and get clear, evidence-based answers without reading pages of legal text.</p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="heroUploadBtn">Upload Policy</button>
+            <button class="btn btn-secondary" id="heroPasteBtn">Paste Policy</button>
+            <button class="btn btn-ghost" id="heroSampleBtn">Try with sample policy</button>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📄</div>
+            <h3>Upload or Paste</h3>
+            <p>Load a privacy policy from a PDF, DOCX, TXT file, or paste the text directly.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔎</div>
+            <h3>Evidence-Based Analysis</h3>
+            <p>Answers come only from the policy itself — no external knowledge or invented information.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>Ask Questions</h3>
+            <p>Ask what the policy says about data collection, sharing, retention, and your rights.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboardLoaded" class="hidden">
+        <div class="loaded-banner">
+          <div class="loaded-banner-left">
+            <span class="dot dot-loaded"></span>
+            <div>
+              <div class="loaded-title">Policy loaded</div>
+              <div class="loaded-meta" id="loadedMeta">—</div>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-small" id="dashboardClearBtn">Load a different policy</button>
+        </div>
+
+        <div id="nonPolicyWarning" class="warning-banner hidden"></div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <h3>Policy Overview</h3>
+            <p id="policyPreview" class="preview-text">—</p>
+          </div>
+          <div class="summary-card">
+            <h3>Privacy Analysis Summary</h3>
+            <div id="analysisSummaryList" class="mini-status-list">Loading analysis…</div>
+            <button class="btn btn-primary btn-small" id="viewFullAnalysisBtn">View full analysis</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-large" id="askFromDashboardBtn">Ask PrivacyLens</button>
+      </div>
+    </section>
+
+    <!-- UPLOAD VIEW -->
+    <section class="view hidden" id="view-upload">
+      <h2 class="view-title">Upload Privacy Policy</h2>
+      <p class="view-subtitle">Supported formats: PDF, DOCX, TXT</p>
+
+      <div class="dropzone" id="dropzone">
+        <div class="dropzone-icon">⬆</div>
+        <div class="dropzone-title">Drag &amp; drop your policy here</div>
+        <div class="dropzone-sub">or click to browse your files</div>
+        <input type="file" id="fileInput" accept=".pdf,.docx,.txt" hidden />
+      </div>
+
+      <div class="divider"><span>or paste your policy text</span></div>
+
+      <textarea id="pasteTextarea" class="paste-textarea" placeholder="Paste the full privacy policy text here..."></textarea>
+      <button class="btn btn-primary" id="pasteSubmitBtn">Analyze pasted text</button>
+
+      <div id="uploadResult" class="upload-result hidden"></div>
+      <div id="uploadError" class="error-banner hidden"></div>
+    </section>
+
+    <!-- ANALYSIS VIEW -->
+    <section class="view hidden" id="view-analysis">
+      <h2 class="view-title">Policy Analysis</h2>
+      <p class="view-subtitle">Five key categories, each backed by evidence directly from the policy.</p>
+      <div id="analysisContent">
+        <div class="empty-state">Load a policy from the Dashboard or Upload page to see analysis.</div>
+      </div>
+    </section>
+
+    <!-- CHAT VIEW -->
+    <section class="view hidden" id="view-chat">
+      <h2 class="view-title">Ask PrivacyLens</h2>
+      <p class="view-subtitle">Ask a question about the loaded policy. Every answer is grounded in the policy text.</p>
+
+      <div class="suggested-questions" id="suggestedQuestions">
+        <button class="chip" data-q="What information is collected?">What information is collected?</button>
+        <button class="chip" data-q="Why is my information collected?">Why is my information collected?</button>
+        <button class="chip" data-q="Is my information shared with third parties?">Is my information shared with third parties?</button>
+        <button class="chip" data-q="How long is my information retained?">How long is my information retained?</button>
+        <button class="chip" data-q="Can I delete my information?">Can I delete my information?</button>
+        <button class="chip" data-q="Is my information used for advertising?">Is my information used for advertising?</button>
+      </div>
+
+      <div class="chat-window" id="chatWindow"></div>
+
+      <form class="chat-input-row" id="chatForm">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Ask a question about this policy..." autocomplete="off" />
+        <button type="submit" class="btn btn-primary" id="chatSendBtn">Ask</button>
+      </form>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
