@@ -151,19 +151,19 @@ The browser is responsible for displaying the interface and communicating with t
 
 ## Home Dashboard
 
-![PrivacyLens Home](docs/screenshots/home.png)
+docs/screenshots/home.png
 
 ## Policy Upload
 
-![PrivacyLens Upload](docs/screenshots/upload.png)
+docs/screenshots/upload.png
 
 ## Policy Analysis
 
-![PrivacyLens Analysis](docs/screenshots/analysis.png)
+docs/screenshots/analysis.png
 
 ## Ask PrivacyLens
 
-![PrivacyLens Chat](docs/screenshots/chatbot.png)
+docs/screenshots/chatbot.png
 
 # How PrivacyLens Works
 
